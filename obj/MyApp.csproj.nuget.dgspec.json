@@ -10,7 +10,7 @@
         "projectUniqueName": "D:\\Session tasks\\MyApp3\\MyApp.csproj",
         "projectName": "MyApp",
         "projectPath": "D:\\Session tasks\\MyApp3\\MyApp.csproj",
-        "packagesPath": "C:\\Users\\Yasha Ali\\AppData\\Local\\Temp\\cursor-sandbox-cache\\fd01180ee7974d57262503ffd1cc2c61\\nuget",
+        "packagesPath": "C:\\Users\\Yasha Ali\\.nuget\\packages\\",
         "outputPath": "D:\\Session tasks\\MyApp3\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [

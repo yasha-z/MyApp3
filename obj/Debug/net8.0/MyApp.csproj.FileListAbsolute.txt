@@ -58,3 +58,4 @@ D:\Session tasks\MyApp3\obj\Debug\net8.0\refint\MyApp.dll
 D:\Session tasks\MyApp3\obj\Debug\net8.0\MyApp.pdb
 D:\Session tasks\MyApp3\obj\Debug\net8.0\MyApp.genruntimeconfig.cache
 D:\Session tasks\MyApp3\obj\Debug\net8.0\ref\MyApp.dll
+D:\Session tasks\MyApp3\obj\Debug\net8.0\MyApp.sourcelink.json

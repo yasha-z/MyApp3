@@ -1,11 +1,13 @@
 using System.ComponentModel.DataAnnotations;
-
+//DTOs are often called data containers
 namespace Session1
 {
     // TASK 3.1 — DTO for POST /api/books request body.
-    // Uses a class (not a record) so DataAnnotations validation can run on incoming JSON.
+
     // ASP.NET Core automatically returns 400 Bad Request with validation errors when
-    // ModelState is invalid (e.g. empty Title → 400 without extra controller code).
+    // ModelState is invalid (e.g. empty Title → 400 without extra controller code)
+
+    //controller ke paas jaiga hee nahin if validation fails
     public class BookCreateDTO
     {
         // Title is required and cannot be blank — [Required] rejects null; [MinLength(1)] rejects "".

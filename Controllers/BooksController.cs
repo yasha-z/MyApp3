@@ -1,22 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
-
+//a controller takes the request, hands it to the service, returns the result (from session 3 slides)
 namespace Session1
 {
     // TASK 3.6 — Full CRUD via IBookService + DTOs only; persistence stays in the service layer.
-    [ApiController]
+    [ApiController] // this attribute tells that this class is a controller and it will handle the request and return the response
+    // from slides: it does auto-valiation (reads [Required], [Range], [StringLength] on your DTOs)
+    // and binding source inference ( figures out where data comes from automatically)
+
+
+//lvl 1 class -> which controller?
     [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
         private readonly IBookService _bookService;
 
-        // TASK 3.5 — Service injected by DI; never use 'new BookService()' here.
+        // TASK 3.5 — Service injected by DI; never use 'new BookService()' here
         public BooksController(IBookService bookService)
         {
             _bookService = bookService;
         }
 
+
+//lvl 2 method -> which action?
         // GET /api/books?author=Rowling&page=1&pageSize=10
         [HttpGet]
+
+        //action results: ok, notfound, badrequest, created, no content
+
+        //CONTROLLER ↔ DTOs only (never sees the entity)
+        // dtos: Only safe, needed fields
         public async Task<ActionResult<List<BookResponseDTO>>> GetAll(
             [FromQuery] string? author,
             [FromQuery] int page = 1,
@@ -34,9 +46,10 @@ namespace Session1
             return Ok(book);
         }
 
-        // POST /api/books — invalid body (e.g. empty title) → automatic 400 from [ApiController] + validation
+        // POST /api/books = invalid body (e.g. empty title) → automatic 400 from [ApiController] + validation
         [HttpPost]
-        public async Task<ActionResult<BookResponseDTO>> Create([FromBody] BookCreateDTO dto)
+        public async Task<ActionResult<BookResponseDTO>> Create([FromBody] BookCreateDTO dto)//waise toh automatically [FromBody] hojati hai
+         //but we can explicitly mention it for clarity
         {
             var created = await _bookService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
@@ -44,6 +57,8 @@ namespace Session1
 
         // PUT /api/books/{id}
         [HttpPut("{id:int}")]
+
+        //iaction result: when nothing to return
         public async Task<IActionResult> Update(int id, [FromBody] BookUpdateDTO dto)
         {
             await _bookService.UpdateAsync(id, dto);
