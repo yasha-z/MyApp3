@@ -1,99 +1,103 @@
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Session1
 {
-    // TASK 3.4 — Service uses BookMapper and works with DTOs; entity access stays here.
     public class BookService : IBookService
     {
-        public Task<List<BookResponseDTO>> GetAllAsync(string? author, int page, int pageSize)
+        private readonly AppDbContext _db;
+
+        public BookService(AppDbContext db)
         {
-            // Start from full in-memory list, then apply optional author filter.
-            IEnumerable<Book> query = InMemoryStore.Books;
+            _db = db;
+        }
+
+        public async Task<List<BookResponseDTO>> GetAllAsync(string? author, int page, int pageSize)
+        {
+            var query = _db.Books
+                .Include(b => b.Author)
+                .AsNoTracking()
+                .AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(author))
             {
-                // Case-insensitive match on author name (navigation property from seed data).
                 query = query.Where(b =>
                     b.Author != null &&
-                    b.Author.Name.Contains(author, StringComparison.OrdinalIgnoreCase));
+                    b.Author.Name.Contains(author));
             }
 
-            // Pagination: page 1 → Skip(0); clamp pageSize to at least 1 to avoid Take(0) surprises.
             var safePage = page < 1 ? 1 : page;
             var safePageSize = pageSize < 1 ? 10 : pageSize;
 
-            var pageItems = query
+            return await query
+                .OrderBy(b => b.Id)
                 .Skip((safePage - 1) * safePageSize)
                 .Take(safePageSize)
-                .Select(BookMapper.ToResponse)
-                .ToList();
-
-            return Task.FromResult(pageItems);
+                .Select(b => BookMapper.ToResponse(b))
+                .ToListAsync();
         }
 
-        public Task<BookResponseDTO> GetByIdAsync(int id)
+        public async Task<BookResponseDTO> GetByIdAsync(int id)
         {
-            var book = InMemoryStore.Books.FirstOrDefault(b => b.Id == id);
+            var book = await _db.Books
+                .Include(b => b.Author)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Id == id);
 
             if (book is null)
             {
                 throw new BookNotFoundException(id);
             }
 
-            return Task.FromResult(BookMapper.ToResponse(book));
+            return BookMapper.ToResponse(book);
         }
 
-        public Task<BookResponseDTO> CreateAsync(BookCreateDTO dto)
+        public async Task<BookResponseDTO> CreateAsync(BookCreateDTO dto)
         {
-            var author = InMemoryStore.Authors.FirstOrDefault(a => a.Id == dto.AuthorId);
-            if (author is null)
+            var authorExists = await _db.Authors.AnyAsync(a => a.Id == dto.AuthorId);
+            if (!authorExists)
             {
                 throw new ArgumentException($"Author with ID {dto.AuthorId} was not found.");
             }
 
             var book = BookMapper.ToEntity(dto);
-            book.Id = InMemoryStore.Books.Count == 0
-                ? 1
-                : InMemoryStore.Books.Max(b => b.Id) + 1;
-            book.Author = author;
+            _db.Books.Add(book);
+            await _db.SaveChangesAsync();
 
-            InMemoryStore.Books.Add(book);
+            await _db.Entry(book).Reference(b => b.Author).LoadAsync();
 
-            return Task.FromResult(BookMapper.ToResponse(book));
+            return BookMapper.ToResponse(book);
         }
 
-        public Task UpdateAsync(int id, BookUpdateDTO dto)
+        public async Task UpdateAsync(int id, BookUpdateDTO dto)
         {
-            var book = InMemoryStore.Books.FirstOrDefault(b => b.Id == id);
+            var book = await _db.Books.FirstOrDefaultAsync(b => b.Id == id);
 
             if (book is null)
             {
                 throw new BookNotFoundException(id);
             }
 
-            var author = InMemoryStore.Authors.FirstOrDefault(a => a.Id == dto.AuthorId);
+            var author = await _db.Authors.FirstOrDefaultAsync(a => a.Id == dto.AuthorId);
             if (author is null)
             {
                 throw new ArgumentException($"Author with ID {dto.AuthorId} was not found.");
             }
 
             BookMapper.ApplyUpdate(book, dto, author);
-
-            return Task.CompletedTask;
+            await _db.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            var book = InMemoryStore.Books.FirstOrDefault(b => b.Id == id);
+            var book = await _db.Books.FirstOrDefaultAsync(b => b.Id == id);
 
             if (book is null)
             {
                 throw new BookNotFoundException(id);
             }
 
-            InMemoryStore.Books.Remove(book);
-
-            return Task.CompletedTask;
+            _db.Books.Remove(book);
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Session1
             };
         }
 
-        // Applies update DTO fields onto an existing tracked entity (in-memory list item).
+        //  update DTO fields onto an existing tracked entity (in-memory list item).
         public static void ApplyUpdate(Book entity, BookUpdateDTO dto, Author author)
         {
             entity.Title = dto.Title;
@@ -25,7 +25,7 @@ namespace Session1
             entity.Author = author;
         }
 
-        // Maps a Book entity to the API response record.
+        // maps a Book entity to the API response record.
         public static BookResponseDTO ToResponse(Book entity)
         {
             return new BookResponseDTO

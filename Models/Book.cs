@@ -7,6 +7,7 @@ namespace Session1
         public int Year { get; set; }
         public int PageCount { get; set; }
         public int AuthorId { get; set; }
+        public string Isbn { get; set; } = string.Empty;
         public Author Author { get; set; } //foreign key relationship
     }
 }

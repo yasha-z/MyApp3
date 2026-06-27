@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Session tasks\\MyApp3\\MyApp.csproj": {}
+    "D:\\Session tasks\\Session4\\MyApp.csproj": {}
   },
   "projects": {
-    "D:\\Session tasks\\MyApp3\\MyApp.csproj": {
+    "D:\\Session tasks\\Session4\\MyApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Session tasks\\MyApp3\\MyApp.csproj",
+        "projectUniqueName": "D:\\Session tasks\\Session4\\MyApp.csproj",
         "projectName": "MyApp",
-        "projectPath": "D:\\Session tasks\\MyApp3\\MyApp.csproj",
-        "packagesPath": "C:\\Users\\Yasha Ali\\AppData\\Local\\Temp\\cursor-sandbox-cache\\fd01180ee7974d57262503ffd1cc2c61\\nuget",
-        "outputPath": "D:\\Session tasks\\MyApp3\\obj\\",
+        "projectPath": "D:\\Session tasks\\Session4\\MyApp.csproj",
+        "packagesPath": "C:\\Users\\Yasha Ali\\.nuget\\packages\\",
+        "outputPath": "D:\\Session tasks\\Session4\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Yasha Ali\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,6 +43,20 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.11, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
+              "target": "Package",
+              "version": "[8.0.2, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.6.2, )"
