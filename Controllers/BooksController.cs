@@ -29,6 +29,8 @@ namespace Session1
 
         //CONTROLLER ↔ DTOs only (never sees the entity)
         // dtos: Only safe, needed fields
+
+        //learn this
         public async Task<ActionResult<List<BookResponseDTO>>> GetAll(
             [FromQuery] string? author,
             [FromQuery] int page = 1,

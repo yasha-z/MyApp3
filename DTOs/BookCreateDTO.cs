@@ -15,7 +15,7 @@ namespace Session1
         [MinLength(1, ErrorMessage = "Title cannot be empty.")]
         public string Title { get; set; } = string.Empty;
 
-        // Reasonable publication-year bounds for demo data validation.
+        
         [Range(1000, 2100, ErrorMessage = "Year must be between 1000 and 2100.")]
         public int Year { get; set; }
 
