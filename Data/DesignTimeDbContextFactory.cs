@@ -6,6 +6,8 @@ namespace Session1
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
+
+        //jab api run nahin ho rahi hoti aur humein migration create karni hoti hai tab ye class kaam aati hai
         public AppDbContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()

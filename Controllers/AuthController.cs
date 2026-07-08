@@ -61,14 +61,15 @@ namespace Session1
         {
             var key = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-
+//sign the token with the key using HMAC SHA256 algorithm taake agar kisi ne token 
+// ko modify kiya hai to signature invalid hojaye
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
                 new Claim(ClaimTypes.Name, username),
                 new Claim(ClaimTypes.Role, role),
-                new Claim(JwtRegisteredClaimNames.Sub, username),
+                new Claim(JwtRegisteredClaimNames.Sub, username),//unique identifier for the user
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

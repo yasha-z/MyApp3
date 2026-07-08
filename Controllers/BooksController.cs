@@ -29,17 +29,18 @@ namespace Session1
         // GET /api/books/{id} — missing id → 404 ProblemDetails via BookNotFoundExceptionHandler
         [HttpGet("{id:int}")]
         public async Task<ActionResult<BookResponseDTO>> GetById(int id)
-        {
+        {//actionresult returns either a BookResponseDTO or a 404 Not Found response if the book is not found
             var book = await _bookService.GetByIdAsync(id);
             return Ok(book);
         }
 
-        // POST /api/books — invalid body (e.g. empty title) → automatic 400 from [ApiController] + validation
+        // POST /api/books invalid body (e.g. empty title) → automatic 400 from [ApiController] + validation
         [HttpPost]
         public async Task<ActionResult<BookResponseDTO>> Create([FromBody] BookCreateDTO dto)
         {
             var created = await _bookService.CreateAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            // define one to many relationship between author and book, so that when we create a book we can also specify the author of the book
         }
 
         // PUT /api/books/{id}

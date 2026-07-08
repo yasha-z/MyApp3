@@ -3,7 +3,7 @@ namespace Session1
     // TASK 3.2 — Static mapper (no AutoMapper). Keeps entity ↔ DTO conversion in one place.
     public static class BookMapper
     {
-        // Maps a create DTO to a new Book entity. Caller assigns Id and Author navigation.
+        // Maps a create DTO to a new Book entity, assigns Id and Author navigation.
         public static Book ToEntity(BookCreateDTO dto)
         {
             return new Book

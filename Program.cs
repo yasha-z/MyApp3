@@ -3,15 +3,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Models;//this is for swagger to understand that the API uses JWT authentication
 using Session1;
 
 var builder = WebApplication.CreateBuilder(args);
-
+ 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");//bring in the connection string from appsettings.json
-//TESTINGGGGGGG PLS WORK
-Console.WriteLine("Connection String:");
-Console.WriteLine(connectionString);
+
 
 //means that we are configuring the DbContext to use MySQL as the database provider
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -85,10 +83,10 @@ builder.Services.AddAuthorization(options =>
         .Build();
 });
 
-builder.Services.AddScoped<IBookService, BookService>();//dependency injection for ibookservies
+builder.Services.AddScoped<IBookService, BookService>();//dependency injection for ibookservies IMPLEMENTATION is in controller
 
-builder.Services.AddProblemDetails();
-builder.Services.AddExceptionHandler<BookNotFoundExceptionHandler>();
+builder.Services.AddProblemDetails();//returns  error responses in the form of problem details
+builder.Services.AddExceptionHandler<BookNotFoundExceptionHandler>();//
 
 var app = builder.Build();
 

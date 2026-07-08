@@ -11,7 +11,7 @@ namespace Session1
         public RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
         {
             _next = next;
-            _logger = logger;
+            _logger = logger;//dependency injection for logger and next middleware
         }
 
         public async Task InvokeAsync(HttpContext context)

@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Session1
 {
-    // Applies role requirements to BooksController actions without editing BooksController (TASK 4.5).
-    public class BooksAuthorizationConvention : IControllerModelConvention
+    // Applies role requirements to BooksController actions without editing BooksController
+    public class BooksAuthorizationConvention : IControllerModelConvention 
     {
         public void Apply(ControllerModel controller)
         {
